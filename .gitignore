@@ -1,0 +1,8 @@
+*.class
+out/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+.idea/
+.vscode/
+*.iml
