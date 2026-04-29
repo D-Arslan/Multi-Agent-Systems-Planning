@@ -257,30 +257,27 @@ Seller                   Buyer1          Buyer2          Buyer3
 ### Prérequis
 
 - Java 8 ou supérieur installé (`java -version`)
-- Se placer dans le dossier `Projet/` :
-  ```
-  cd d:\TP_Tech_Agent\Projet
+- Se placer à la **racine du projet** (pas dans un sous-dossier) :
+  ```powershell
+  cd D:\TP_Tech_Agent\Projet
   ```
 
-### Étape 1 — Compilation
+> Important : toutes les commandes s'exécutent depuis `Projet\`, pas depuis `part1-auction\`.
 
-```bash
-javac -cp lib/jade.jar -d part1-auction/out \
-  part1-auction/src/Product.java \
-  part1-auction/src/BuyerAgent.java \
-  part1-auction/src/SellerAgent.java \
-  part1-auction/src/AuctionLauncher.java
+### Étape 1 — Compilation (PowerShell — tout sur une seule ligne)
+
+```powershell
+javac -cp "lib\jade.jar" -d "part1-auction\out" "part1-auction\src\Product.java" "part1-auction\src\BuyerAgent.java" "part1-auction\src\SellerAgent.java" "part1-auction\src\AuctionLauncher.java"
 ```
 
 > Aucun message = compilation réussie.
+> Note : sous PowerShell, le séparateur de classpath est `;` et les chemins utilisent `\`.
 
 ### Étape 2 — Lancement
 
-```bash
-java -cp "lib/jade.jar;part1-auction/out" part1.AuctionLauncher
+```powershell
+java -cp "lib\jade.jar;part1-auction\out" part1.AuctionLauncher
 ```
-
-> Sur Linux/Mac, remplacer `;` par `:` dans le classpath.
 
 La **GUI JADE** s'ouvre automatiquement. On peut y voir les 4 agents (Seller, Buyer1, Buyer2, Buyer3) dans le container `Main-Container`.
 
