@@ -257,21 +257,22 @@ Seller                   Buyer1          Buyer2          Buyer3
 ### Prérequis
 
 - Java 8 ou supérieur installé (`java -version`)
-- Se placer à la **racine du projet** (pas dans un sous-dossier) :
+- Ouvrir PowerShell et se placer à la **racine du projet** :
   ```powershell
   cd D:\TP_Tech_Agent\Projet
   ```
 
-> Important : toutes les commandes s'exécutent depuis `Projet\`, pas depuis `part1-auction\`.
+> **Important :** toutes les commandes s'exécutent depuis `Projet\`. Ne pas lancer depuis `part1-auction\`.
 
-### Étape 1 — Compilation (PowerShell — tout sur une seule ligne)
+> **Astuce encodage :** lancer `chcp 65001` avant pour afficher les `€` et `—` correctement dans la console.
+
+### Étape 1 — Compilation
 
 ```powershell
 javac -cp "lib\jade.jar" -d "part1-auction\out" "part1-auction\src\Product.java" "part1-auction\src\BuyerAgent.java" "part1-auction\src\SellerAgent.java" "part1-auction\src\AuctionLauncher.java"
 ```
 
-> Aucun message = compilation réussie.
-> Note : sous PowerShell, le séparateur de classpath est `;` et les chemins utilisent `\`.
+> Aucun message affiché = compilation réussie.
 
 ### Étape 2 — Lancement
 
@@ -279,36 +280,94 @@ javac -cp "lib\jade.jar" -d "part1-auction\out" "part1-auction\src\Product.java"
 java -cp "lib\jade.jar;part1-auction\out" part1.AuctionLauncher
 ```
 
-La **GUI JADE** s'ouvre automatiquement. On peut y voir les 4 agents (Seller, Buyer1, Buyer2, Buyer3) dans le container `Main-Container`.
+La **GUI JADE** s'ouvre. On y voit dans `Main-Container` :
+- `Buyer1`, `Buyer2`, `Buyer3` — les agents acheteurs
+- `Seller` — l'agent vendeur
+- `ams`, `df`, `rma` — agents systèmes JADE (ne pas y toucher)
 
-### Étape 3 — Lecture de la sortie console
+La GUI peut être laissée ouverte. Le déroulement de l'enchère s'affiche dans la **console PowerShell**.
 
-La sortie attendue (scénario par défaut) :
+### Étape 3 — Sortie console observée (scénario par défaut)
+
+Voici la sortie réelle obtenue lors du test :
 
 ```
-[Buyer1] Ready — budget: 1500.0 €, increment: 50.0 €
-[Buyer2] Ready — budget: 1200.0 €, increment: 50.0 €
 [Buyer3] Ready — budget: 900.0 €, increment: 50.0 €
+[Buyer2] Ready — budget: 1200.0 €, increment: 50.0 €
+[Buyer1] Ready — budget: 1500.0 €, increment: 50.0 €
 [Seller] Auction started — Laptop (starting: 1000.0 €) | reserve: 1300.0 € | buyers: 3
+
 [Seller] --- Round — current price: 1000.0 € — active buyers: 3
 [Buyer3] Budget exceeded — refusing (next bid would be 1050.0 €, budget: 900.0 €)
-[Buyer1] Bidding 1050.0 € ...
-[Buyer2] Bidding 1050.0 € ...
-...
+[Buyer1] Bidding 1050.0 € (current: 1000.0 €)
+[Buyer2] Bidding 1050.0 € (current: 1000.0 €)
+[Seller] Buyer3 refused.
+[Seller] Received offer 1050.0 € from Buyer1
+[Seller] Received offer 1050.0 € from Buyer2
+[Seller] Best offer this round: 1050.0 € by Buyer1
+
+[Seller] --- Round — current price: 1050.0 € — active buyers: 2
+[Buyer1] Bidding 1100.0 € (current: 1050.0 €)
+[Buyer2] Bidding 1100.0 € (current: 1050.0 €)
+[Seller] Received offer 1100.0 € from Buyer1
+[Seller] Received offer 1100.0 € from Buyer2
+[Seller] Best offer this round: 1100.0 € by Buyer1
+
+[Seller] --- Round — current price: 1100.0 € — active buyers: 2
+[Buyer1] Bidding 1150.0 € (current: 1100.0 €)
+[Buyer2] Bidding 1150.0 € (current: 1100.0 €)
+[Seller] Received offer 1150.0 € from Buyer1
+[Seller] Received offer 1150.0 € from Buyer2
+[Seller] Best offer this round: 1150.0 € by Buyer1
+
+[Seller] --- Round — current price: 1150.0 € — active buyers: 2
+[Buyer1] Bidding 1200.0 € (current: 1150.0 €)
+[Buyer2] Bidding 1200.0 € (current: 1150.0 €)
+[Seller] Received offer 1200.0 € from Buyer1
+[Seller] Received offer 1200.0 € from Buyer2
+[Seller] Best offer this round: 1200.0 € by Buyer1
+
+[Seller] --- Round — current price: 1200.0 € — active buyers: 2
+[Buyer2] Budget exceeded — refusing (next bid would be 1250.0 €, budget: 1200.0 €)
+[Buyer1] Bidding 1250.0 € (current: 1200.0 €)
+[Seller] Buyer2 refused.
+[Seller] Received offer 1250.0 € from Buyer1
+[Seller] Best offer this round: 1250.0 € by Buyer1
+
+[Seller] --- Round — current price: 1250.0 € — active buyers: 1
+[Buyer1] Bidding 1300.0 € (current: 1250.0 €)
+[Seller] Received offer 1300.0 € from Buyer1
+
 [Seller] === Auction closed — final price: 1300.0 €
 [Seller] SALE CONFIRMED — winner: Buyer1 at 1300.0 €
 [Buyer1] WON the auction at 1300.0 €
 ```
 
-### Étape 4 — Tester les autres scénarios
+### Étape 4 — Conformité aux résultats attendus
+
+| Point de vérification | Résultat observé | Conforme |
+|-----------------------|-----------------|---------|
+| Buyer3 refuse dès le round 1 (budget 900 < 1050) | `Buyer3 refused` round 1 | ✅ |
+| Buyer2 abandonne quand le prix dépasse son budget (1200€) | `Buyer2 refused` au round 1200€ | ✅ |
+| Le seller n'envoie le CFP qu'aux buyers encore actifs | `active buyers: 2` puis `1` | ✅ |
+| Buyer1 continue seul jusqu'à 1300€ | `Bidding 1300.0€` round 6 | ✅ |
+| Clôture dès que prix >= réserve (1300€) | `Auction closed — final price: 1300.0€` | ✅ |
+| Vente confirmée, gagnant Buyer1 | `SALE CONFIRMED — winner: Buyer1` | ✅ |
+| Buyer1 notifié de sa victoire | `WON the auction at 1300.0€` | ✅ |
+
+### Étape 5 — Tester les autres scénarios
 
 **Cas 2 : Vente annulée (prix de réserve non atteint)**
 
-Dans `AuctionLauncher.java`, modifier :
+Dans `AuctionLauncher.java`, modifier puis recompiler :
 ```java
-private static final String RESERVE_PRICE = "1800";  // très élevé
+private static final String RESERVE_PRICE = "1800";
 ```
-Recompiler et relancer → le seller annoncera `SALE CANCELLED`.
+Résultat attendu :
+```
+[Seller] SALE CANCELLED — reserve price not reached.
+[Buyer1] Auction ended with no sale.
+```
 
 **Cas 3 : Tous les buyers sous le prix de départ**
 
@@ -318,19 +377,19 @@ private static final String[][] BUYERS = {
     { "Buyer2", "700", "50" },
 };
 ```
-→ Tous refusent dès le round 1 → clôture immédiate sans vente.
+Résultat attendu : tous refusent round 1 → clôture immédiate sans vente.
 
-**Cas 4 : Ajouter un 4ème buyer**
+**Cas 4 : Ajouter un 4ème buyer avec incrément agressif**
 
 ```java
 private static final String[][] BUYERS = {
-    { "Buyer1", "1500", "50" },
-    { "Buyer2", "1200", "50" },
-    { "Buyer3", "900",  "50" },
-    { "Buyer4", "2000", "100" },   // nouveau, incrément plus agressif
+    { "Buyer1", "1500", "50"  },
+    { "Buyer2", "1200", "50"  },
+    { "Buyer3", "900",  "50"  },
+    { "Buyer4", "2000", "100" },
 };
 ```
-→ Buyer4 remportera l'enchère plus rapidement avec son incrément de 100.
+Résultat attendu : Buyer4 remporte l'enchère plus tôt grâce à son incrément de 100€.
 
 ---
 
