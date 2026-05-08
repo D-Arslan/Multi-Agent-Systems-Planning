@@ -37,13 +37,14 @@
 **Assigné à : D-Arslan**
 
 ### À faire
-- [ ] Cloner `aima-python` et installer les dépendances
-- [ ] Exécuter toutes les cellules du notebook `planning_partial_order_planner.ipynb`
-- [ ] Copier le notebook exécuté dans `part3-aima-planning/notebook/`
-- [ ] Rédiger un court rapport des résultats (dans le README)
+*(rien)*
 
 ### Fait
 - [x] Structure du dossier + README
+- [x] Implémentation POP from scratch (`pop_test.py` + notebook)
+- [x] Notebook exécuté avec outputs dans `notebook/planning_partial_order_planner.ipynb`
+- [x] Figures générées : `plan_socks_shoes.png`, `plan_spare_tire.png`
+- [x] Rapport des résultats rédigé dans le README
 
 ---
 
@@ -68,5 +69,5 @@
 |--------|---------|--------|
 | Part 1 — Enchères | D-Arslan | En cours |
 | Part 2 — Agents mobiles | Binôme | Non démarré |
-| Part 3 — AIMA Python | D-Arslan | Non démarré |
+| Part 3 — AIMA Python | D-Arslan | **Terminé** |
 | Part 4 — Planification centralisée | Binôme | Non démarré |
